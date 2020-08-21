@@ -21,11 +21,11 @@ async function loadPlanetsData() {
   const file = await Deno.open(path);
   const bufReader = new BufReader(file);
   const result = await parse(bufReader, {
-    //we want to parse header
+    // parse header and commit
     header: true,
     comment: "#",
   });
-  //deno close to prevent memory leak
+  //Deno.close to prevent memory leak
   Deno.close(file.rid);
 
   //                    type assertion
@@ -39,6 +39,7 @@ async function loadPlanetsData() {
       stellarMass > 0.78 && stellarMass < 1.04 &&
       stellarRadius > 0.99 && stellarRadius < 1.01;
   });
+  //_.pick() lodash Creates an object composed of the picked object properties.
 
   return planets.map((planet) => {
     return _.pick(planet, [
@@ -60,3 +61,4 @@ for (const planet of newEarths) {
 }
 
 console.log(`${newEarths.length} habitable planets found!`);
+
